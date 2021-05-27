@@ -1,48 +1,38 @@
-# if __name__=='__main__':
-cases = [
-    'asdmasmd',
-    'asl1dfskld'
+if __name__ == '__main__':
+    cases = [
+        'asl1d1fskld asdf34ga'
     ]
 
+    for case in cases:
+        list_of_letter = []
+        position_of_exceptions = {}  # хранит в себе индексы фиксируемых значение
 
-position_of_exceptions = []     #хранит в себе индексы фиксируемых значение
 
-
-for case in cases:
-        list_by_case = list(case)   #преобразует строку в список
-
-        def counter_of_words(case): #функция, которая считает кол-во слов в строке
+        def counter_of_words(case):  # функция, которая считает кол-во слов в строке
             if case.find(' ') < 1:
-                return one_word_remove(case)
+                word = case
+                return word_gathering(word)
             else:
+                return ' '.join([word_gathering(word) for word in case.split()])
 
 
+        def word_gathering(word):  # Функция 'собирает' элементы в готовую строку
+            list_of_letter.clear()  # Очищает массив и словарь от значений предыдущей строки, если такая была
+            position_of_exceptions.clear()
+            one_word_remove(word)
+            revers_word = list_of_letter[::-1]
+            [revers_word.insert(key, position_of_exceptions[key]) for key in position_of_exceptions]
+            return ''.join(revers_word)
 
-        def one_word_remove(case):  #функция для "переворота" строки с одним словом
-            if case.isalpha() == True:
-                return ''.join(case[::-1])  # "переворачивает" строку если в неё только литералы
-            else:
-                exception_positions(case)   # вызов функции
-                pos = {position: list_by_case[position] for position in position_of_exceptions}     #словарь, хранящий в себе индексы, которые не переставляются и их значения
-                for position in position_of_exceptions:     #удаляет элементы, которые не нужно переставлять
-                    list_by_case.pop(position)
-                return return_fix_values(case, pos)
 
-        def return_fix_values(case, pos):   # функция возвращает на места фиксированные значения
-            new_list_case = list_by_case[::-1]
-            new_list_case.append('0'*len(pos))
-            for key in pos.keys():  #этот цикл перебирает ключи словаря, и "двигает" элементы строки вправо, освобождая место для возвращения фиксированных элементов
-                for i in range(len(new_list_case) - 1, key, -1):
-                    new_list_case[i] = new_list_case[i - 1]
-                new_list_case[key] = pos[key]
-            return ''.join(new_list_case)
-
-        def exception_positions(case):  #Эта функция определяет индексы фиксируемых элементов и добавляет их (индексы) в отдельный list
-            # list_by_case = list(case)
-            for i in range(0, len(list_by_case)):
-                if list_by_case[i].isalpha() == False:
-                    position_of_exceptions.append(i)
-
+        def one_word_remove(
+                word):  # Функция делает из строки массив, и затем сортирует фиксируемые и нефиксируемые элементы
+            list_by_word = list(word)
+            for i in range(0, len(list_by_word)):
+                if list_by_word[i].isalpha():
+                    list_of_letter.append(list_by_word[i])  # добавляет в list нефиксируемые эл.
+                else:
+                    position_of_exceptions[i] = list_by_word[i]  # добавляет в dict фиксируемые элементы и их индексы
 
 
         print(counter_of_words(case))
