@@ -6,5 +6,7 @@ def remove_word(word):  # Функция "переворачивает" слов
     return ''.join(revers_word)
 
 
-case = 'ed12adfgv qwet'
-print(' '.join([remove_word(word) for word in case.split(' ')]))
+if __name__ == '__main__':
+    case = input()
+    print(' '.join([remove_word(word) for word in case.split(' ')]))
+
